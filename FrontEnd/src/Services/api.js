@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an axios instance
 const apiClient = axios.create({
   // baseURL: "https://api-chi-eight-27.vercel.app/api/",
-  baseURL: "http://localhost:9000/api/",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "/api/",
 
   headers: {
     "Content-Type": "application/json",

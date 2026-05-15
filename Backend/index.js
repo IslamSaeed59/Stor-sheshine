@@ -61,6 +61,7 @@ io.on("connection", (socket) => {
 });
 // ✅ Serve static files (uploaded images)
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use(express.static(path.join(__dirname, "../FrontEnd/dist")));
 
 // Import Routes
 const userRoutes = require("./Routing/User/user.Routes.js");
@@ -82,6 +83,13 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/mainpage", mainPageRoutes);
+
+// Catch-all route to serve the Frontend index.html for any non-API routes
+app.get("*", (req, res) => {
+  if (!req.path.startsWith("/api")) {
+    res.sendFile(path.join(__dirname, "../FrontEnd/dist", "index.html"));
+  }
+});
 
 // 🏥 Health Check Endpoint
 app.get("/api/health", async (req, res) => {
