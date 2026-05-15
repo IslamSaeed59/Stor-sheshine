@@ -6,6 +6,8 @@
     "FrontEnd"
   ],
   "scripts": {
+    "start": "npm run start-backend",
+    "build": "npm run build-frontend",
     "install-backend": "npm install --workspace=backend",
     "install-frontend": "npm install --workspace=frontend",
     "start-backend": "npm start --workspace=backend",
