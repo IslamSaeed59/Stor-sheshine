@@ -20,7 +20,8 @@ const connectDB = async () => {
     console.log(`✅ MySQL/Sequelize Connected: ${DB_HOST}`);
   } catch (error) {
     console.error(`❌ DB Error: ${error.message}`);
-    process.exit(1);
+    // We don't exit the process here to avoid 502 Bad Gateway in production.
+    // Instead, the app will stay alive and log the connection error.
   }
 };
 

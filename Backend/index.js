@@ -98,7 +98,7 @@ app.get("/api/health", async (req, res) => {
     await sequelize.authenticate();
     res.json({ status: "connected", state: 1 });
   } catch (error) {
-    res.json({ status: "disconnected", state: 0 });
+    res.json({ status: "disconnected", state: 0, error: error.message });
   }
 });
 
@@ -110,6 +110,14 @@ const PORT = process.env.PORT || 9000;
     console.error("FATAL ERROR: JWT_SECRET is not defined.");
     process.exit(1);
   }
+
+  // Start the Express server first to avoid 502 Bad Gateway
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(
+      `🚀 Server with Socket.IO running on http://0.0.0.0:${PORT}`,
+    );
+  });
+
   try {
     // 1. Authenticate the database connection
     await connectDB();
@@ -117,16 +125,9 @@ const PORT = process.env.PORT || 9000;
     // 2. Sync database models
     await sequelize.sync({ alter: true });
     console.log("✅ All models were synchronized successfully.");
-
-    // 3. Start the Express server
-    server.listen(PORT, "0.0.0.0", () => {
-      console.log(
-        `🚀 Server with Socket.IO running on http://0.0.0.0:${PORT}`,
-      );
-    });
   } catch (err) {
-    console.error("❌ Unable to start the server:", err);
-    process.exit(1);
+    console.error("❌ Database initialization error:", err);
+    // The server is already listening, so it won't trigger a 502 error.
   }
 })();
 
