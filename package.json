@@ -5,6 +5,9 @@
     "Backend",
     "FrontEnd"
   ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "npm run start-backend",
     "build": "npm run build-frontend",
