@@ -86,7 +86,8 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/mainpage", mainPageRoutes);
 
 // Catch-all route to serve the Frontend index.html for any non-API routes
-app.get("*", (req, res) => {
+// In Express 5, the '*' wildcard must be written as '(.*)'
+app.get("(.*)", (req, res) => {
   if (!req.path.startsWith("/api")) {
     res.sendFile(path.join(__dirname, "../FrontEnd/dist", "index.html"));
   }
