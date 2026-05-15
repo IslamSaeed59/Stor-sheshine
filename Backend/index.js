@@ -91,7 +91,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/mainpage", mainPageRoutes);
 
 // Catch-all route to serve the Frontend index.html for any non-API routes
-app.get("(.*)", (req, res) => {
+app.get("/:path*", (req, res) => {
   if (!req.path.startsWith("/api")) {
     const indexPath = path.join(__dirname, "../FrontEnd/dist", "index.html");
     res.sendFile(indexPath);
