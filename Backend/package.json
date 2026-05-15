@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'No build needed for backend' && exit 0",
+    "vercel-build": "npm install --legacy-peer-deps && npm run build",
+    "start": "nodemon index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon index.js",
+    "client": "cd ../Frontend && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.15.2",
+    "nodemon": "^3.1.10",
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "baseline-browser-mapping": "^2.10.0",
+    "concurrently": "^9.2.1"
+  }
+}
