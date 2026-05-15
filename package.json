@@ -1,0 +1,14 @@
+{
+  "name": "sheshine-monorepo",
+  "private": true,
+  "workspaces": [
+    "Backend",
+    "FrontEnd"
+  ],
+  "scripts": {
+    "install-backend": "npm install --workspace=backend",
+    "install-frontend": "npm install --workspace=frontend",
+    "start-backend": "npm start --workspace=backend",
+    "build-frontend": "npm run build --workspace=frontend"
+  }
+}
