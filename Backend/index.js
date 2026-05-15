@@ -1,5 +1,3 @@
-console.log("🎬 Application is starting...");
-
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -13,9 +11,6 @@ const { User, Profile, Employee, Product, Category, ProductVariant, MainPage } =
 
 // Load environment variables
 dotenv.config();
-
-console.log("📁 Current directory:", __dirname);
-console.log("🌐 Node Version:", process.version);
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -91,7 +86,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/mainpage", mainPageRoutes);
 
-// ✅ NEW Middleware-based Catch-all (Avoids path-to-regexp error)
+// ✅ Middleware-based Catch-all for Frontend
 app.use((req, res, next) => {
   if (req.method === "GET" && !req.path.startsWith("/api") && !req.path.includes(".")) {
     const indexPath = path.join(__dirname, "../FrontEnd/dist", "index.html");
@@ -112,10 +107,28 @@ app.get("/api/health", async (req, res) => {
 
 const PORT = 9000; 
 
+// ✅ Function to seed the admin user
+const seedAdmin = async () => {
+  try {
+    const existingAdmin = await User.findOne({ where: { role: "admin" } });
+    if (!existingAdmin) {
+      await User.create({
+        name: "Admin",
+        email: "admin@gmail.com",
+        password: "123456", // Make sure your User model has a password hash hook
+        role: "admin",
+      });
+      console.log("✅ Default admin created: admin@gmail.com / 123456");
+    } else {
+      console.log("ℹ️ Admin account already exists.");
+    }
+  } catch (error) {
+    console.error("❌ Error seeding admin:", error.message);
+  }
+};
+
 // Function to start the server
 (async () => {
-  console.log(`📡 Starting server on port ${PORT}...`);
-  
   if (!process.env.JWT_SECRET) {
     process.env.JWT_SECRET = "temp_secret_for_debug";
   }
@@ -128,8 +141,11 @@ const PORT = 9000;
     await connectDB();
     await sequelize.sync({ alter: true });
     console.log("✅ Database synced successfully.");
+    
+    // ✅ Create Admin on startup if not exists
+    await seedAdmin();
   } catch (err) {
-    console.error("❌ DB Initialization Error:", err);
+    console.error("❌ Database initialization error:", err);
   }
 })();
 
