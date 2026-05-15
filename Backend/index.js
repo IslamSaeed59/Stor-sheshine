@@ -15,6 +15,7 @@ dotenv.config();
 const allowedOrigins = [
   "http://localhost:5173",
   "https://storsheshine.vercel.app",
+  "https://storsheshine-frontend-k6un9e-2508a9-187-124-10-207.sslip.io",
 ];
 
 app.use(
@@ -118,9 +119,9 @@ const PORT = process.env.PORT || 9000;
     console.log("✅ All models were synchronized successfully.");
 
     // 3. Start the Express server
-    server.listen(PORT, () => {
+    server.listen(PORT, "0.0.0.0", () => {
       console.log(
-        `🚀 Server with Socket.IO running on http://localhost:${PORT}`,
+        `🚀 Server with Socket.IO running on http://0.0.0.0:${PORT}`,
       );
     });
   } catch (err) {
