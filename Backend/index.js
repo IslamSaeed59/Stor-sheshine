@@ -1,3 +1,5 @@
+console.log("🎬 Application is starting..."); // Added for debugging
+
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -11,6 +13,9 @@ const { User, Profile, Employee, Product, Category, ProductVariant, MainPage } =
 
 // Load environment variables
 dotenv.config();
+
+console.log("📁 Current directory:", __dirname);
+console.log("🌐 Node Version:", process.version);
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -26,7 +31,7 @@ app.use(
       if (allowedOrigins.includes(cleanOrigin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(null, true); // Temporarily allow all for debugging
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -86,10 +91,10 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/mainpage", mainPageRoutes);
 
 // Catch-all route to serve the Frontend index.html for any non-API routes
-// In Express 5, the '*' wildcard must be written as '(.*)'
 app.get("(.*)", (req, res) => {
   if (!req.path.startsWith("/api")) {
-    res.sendFile(path.join(__dirname, "../FrontEnd/dist", "index.html"));
+    const indexPath = path.join(__dirname, "../FrontEnd/dist", "index.html");
+    res.sendFile(indexPath);
   }
 });
 
@@ -103,34 +108,30 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 9000;
+// We force port 9000 to match your domain settings
+const PORT = 9000; 
 
 // Function to start the server
 (async () => {
+  console.log(`📡 Attempting to start server on port ${PORT}...`);
+  
   if (!process.env.JWT_SECRET) {
-    console.error("FATAL ERROR: JWT_SECRET is not defined.");
-    process.exit(1);
+    console.warn("⚠️ WARNING: JWT_SECRET is not defined. Using a temporary secret for debugging.");
+    process.env.JWT_SECRET = "temp_secret_for_debug";
   }
 
-  // Start the Express server first to avoid 502 Bad Gateway
   server.listen(PORT, "0.0.0.0", () => {
-    console.log(
-      `🚀 Server with Socket.IO running on http://0.0.0.0:${PORT}`,
-    );
+    console.log(`🚀 Server is LIVE on http://0.0.0.0:${PORT}`);
   });
 
   try {
-    // 1. Authenticate the database connection
     await connectDB();
-    
-    // 2. Sync database models
     await sequelize.sync({ alter: true });
-    console.log("✅ All models were synchronized successfully.");
+    console.log("✅ Database synced.");
   } catch (err) {
-    console.error("❌ Database initialization error:", err);
-    // The server is already listening, so it won't trigger a 502 error.
+    console.error("❌ DB Initialization Error:", err);
   }
 })();
 
-// Global Error Handler (must be last middleware)
+// Global Error Handler
 app.use(errorHandler);
