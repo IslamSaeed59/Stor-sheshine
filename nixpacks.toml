@@ -1,2 +1,2 @@
 [start]
-cmd = "npm start"
+cmd = "node Backend/index.js"

@@ -1,4 +1,4 @@
-console.log("🎬 Application is starting..."); // Added for debugging
+console.log("🎬 Application is starting...");
 
 const express = require("express");
 const app = express();
@@ -31,7 +31,7 @@ app.use(
       if (allowedOrigins.includes(cleanOrigin)) {
         callback(null, true);
       } else {
-        callback(null, true); // Temporarily allow all for debugging
+        callback(null, true); 
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -65,6 +65,7 @@ io.on("connection", (socket) => {
     console.log("❌ User disconnected:", socket.id);
   });
 });
+
 // ✅ Serve static files (uploaded images)
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 app.use(express.static(path.join(__dirname, "../FrontEnd/dist")));
@@ -90,12 +91,13 @@ app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/mainpage", mainPageRoutes);
 
-// Catch-all route to serve the Frontend index.html for any non-API routes
-app.get("/:path*", (req, res) => {
-  if (!req.path.startsWith("/api")) {
+// ✅ NEW Middleware-based Catch-all (Avoids path-to-regexp error)
+app.use((req, res, next) => {
+  if (req.method === "GET" && !req.path.startsWith("/api") && !req.path.includes(".")) {
     const indexPath = path.join(__dirname, "../FrontEnd/dist", "index.html");
-    res.sendFile(indexPath);
+    return res.sendFile(indexPath);
   }
+  next();
 });
 
 // 🏥 Health Check Endpoint
@@ -108,15 +110,13 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-// We force port 9000 to match your domain settings
 const PORT = 9000; 
 
 // Function to start the server
 (async () => {
-  console.log(`📡 Attempting to start server on port ${PORT}...`);
+  console.log(`📡 Starting server on port ${PORT}...`);
   
   if (!process.env.JWT_SECRET) {
-    console.warn("⚠️ WARNING: JWT_SECRET is not defined. Using a temporary secret for debugging.");
     process.env.JWT_SECRET = "temp_secret_for_debug";
   }
 
@@ -127,7 +127,7 @@ const PORT = 9000;
   try {
     await connectDB();
     await sequelize.sync({ alter: true });
-    console.log("✅ Database synced.");
+    console.log("✅ Database synced successfully.");
   } catch (err) {
     console.error("❌ DB Initialization Error:", err);
   }
