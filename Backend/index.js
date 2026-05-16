@@ -7,7 +7,15 @@ const path = require("path");
 const cors = require("cors");
 const errorHandler = require("./Middleware/errorHandler.js");
 const { connectDB, sequelize } = require("./Config/db");
-const { User, Profile, Employee, Product, Category, ProductVariant, MainPage } = require("./Models/associations");
+const {
+  User,
+  Profile,
+  Employee,
+  Product,
+  Category,
+  ProductVariant,
+  MainPage,
+} = require("./Models/associations");
 
 // Load environment variables
 dotenv.config();
@@ -26,7 +34,7 @@ app.use(
       if (allowedOrigins.includes(cleanOrigin)) {
         callback(null, true);
       } else {
-        callback(null, true); 
+        callback(null, true);
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -88,7 +96,11 @@ app.use("/api/mainpage", mainPageRoutes);
 
 // ✅ Middleware-based Catch-all for Frontend
 app.use((req, res, next) => {
-  if (req.method === "GET" && !req.path.startsWith("/api") && !req.path.includes(".")) {
+  if (
+    req.method === "GET" &&
+    !req.path.startsWith("/api") &&
+    !req.path.includes(".")
+  ) {
     const indexPath = path.join(__dirname, "../FrontEnd/dist", "index.html");
     return res.sendFile(indexPath);
   }
@@ -105,7 +117,7 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-const PORT = 9000; 
+const PORT = 9000;
 
 // ✅ Function to seed the admin user
 const seedAdmin = async () => {
@@ -139,7 +151,9 @@ const seedAdmin = async () => {
 
   // ✅ Graceful Shutdown for Docker / Dokploy (Prevents Ghost Containers & Port Conflicts)
   const shutdown = () => {
-    console.log("⚠️ Received shutdown signal (SIGTERM/SIGINT). Closing server...");
+    console.log(
+      "⚠️ Received shutdown signal (SIGTERM/SIGINT). Closing server...",
+    );
     server.close(() => {
       console.log("🔒 HTTP server closed.");
       process.exit(0);
@@ -158,7 +172,7 @@ const seedAdmin = async () => {
     await connectDB();
     await sequelize.sync({ alter: true });
     console.log("✅ Database synced successfully.");
-    
+
     // ✅ Create Admin on startup if not exists
     await seedAdmin();
   } catch (err) {
