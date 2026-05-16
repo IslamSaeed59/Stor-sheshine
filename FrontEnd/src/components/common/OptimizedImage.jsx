@@ -33,14 +33,22 @@ function buildCloudinaryUrl(src, width, crop = "") {
   // Strip any pre-existing transformation block so we never stack transforms.
   const cleanPath = afterUpload.replace(
     /^(?:[a-z_0-9]+(?::[a-z_0-9.]+)?(?:,)?)+\//,
-    ""
+    "",
   );
 
   const cropParam = crop ? `${crop},` : "";
   return `${beforeUpload}${cropParam}f_auto,q_auto:eco,w_${width}/${cleanPath}`;
 }
 
-const OptimizedImage = ({ src, alt, className, style, sizes, crop, onImageLoad }) => {
+const OptimizedImage = ({
+  src,
+  alt,
+  className,
+  style,
+  sizes,
+  crop,
+  onImageLoad,
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -56,7 +64,8 @@ const OptimizedImage = ({ src, alt, className, style, sizes, crop, onImageLoad }
   if (isCloudinary) {
     resolvedSrc = buildCloudinaryUrl(src, 800, crop);
   } else if (isLocal) {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || window.location.origin; // Adjust this based on your environment
+    const backendUrl =
+      import.meta.env.VITE_BACKEND_URL || window.location.origin; // Adjust this based on your environment
     resolvedSrc = `${backendUrl}${src}`;
   }
 
@@ -85,8 +94,7 @@ const OptimizedImage = ({ src, alt, className, style, sizes, crop, onImageLoad }
         src={resolvedSrc}
         srcSet={srcSet}
         sizes={
-          sizes ||
-          "(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
+          sizes || "(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
         }
         alt={alt}
         loading="lazy"
