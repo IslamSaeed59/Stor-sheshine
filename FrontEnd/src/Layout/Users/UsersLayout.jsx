@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import UserTopBar from "./UserTopBar";
 import Footer from "./Footer";
 import CartDrawer from "../../components/Users/Cart/CartDrawer";
@@ -8,19 +8,31 @@ import { motion, AnimatePresence } from "framer-motion";
 const UsersLayout = () => {
   const [isSiteLoading, setIsSiteLoading] = useState(true);
 
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
   useEffect(() => {
+    // Show loader on route change
+    setIsSiteLoading(true);
+
     // Listen for custom event from the Hero component
     const handleAppReady = () => setIsSiteLoading(false);
     window.addEventListener("app-ready", handleAppReady);
 
-    // Fallback: hide loader after 2.5 seconds anyway
-    const timeout = setTimeout(() => setIsSiteLoading(false), 2500);
+    // Fallback: wait longer on homepage for hero image, short time on other pages
+    const fallbackTime = isHomePage ? 10000 : 800;
+    const timeout = setTimeout(() => setIsSiteLoading(false), fallbackTime);
+
+    // If it's not the home page, we can also just dispatch it early if there's no Hero
+    if (!isHomePage) {
+      setTimeout(() => setIsSiteLoading(false), 400);
+    }
 
     return () => {
       window.removeEventListener("app-ready", handleAppReady);
       clearTimeout(timeout);
     };
-  }, []);
+  }, [location.pathname]);
   // This layout provides the main structure for all user-facing pages.
   // It includes the top navigation bar, the main content area, and the footer.
   return (
