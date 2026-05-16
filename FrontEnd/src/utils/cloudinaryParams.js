@@ -9,7 +9,9 @@ export const optimizeCloudinaryUrl = (url, options = {}) => {
   
   // Handle local uploads
   if (url.startsWith('/uploads/')) {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || window.location.origin; // Adjust this based on your environment
+    const backendUrl = import.meta.env.DEV
+      ? (import.meta.env.VITE_BACKEND_URL || "http://localhost:9000")
+      : window.location.origin;
     return `${backendUrl}${url}`;
   }
 

@@ -64,8 +64,9 @@ const OptimizedImage = ({
   if (isCloudinary) {
     resolvedSrc = buildCloudinaryUrl(src, 800, crop);
   } else if (isLocal) {
-    const backendUrl =
-      import.meta.env.VITE_BACKEND_URL || window.location.origin; // Adjust this based on your environment
+    const backendUrl = import.meta.env.DEV
+      ? (import.meta.env.VITE_BACKEND_URL || "http://localhost:9000")
+      : window.location.origin;
     resolvedSrc = `${backendUrl}${src}`;
   }
 
