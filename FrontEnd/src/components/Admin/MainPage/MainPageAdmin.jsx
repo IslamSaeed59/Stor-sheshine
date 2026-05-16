@@ -224,31 +224,28 @@ const MainPageAdmin = () => {
               <label className={labelClass}>Hero Title</label>
               <input
                 type="text"
-                {...register("HeroName", { required: "Hero Name is required" })}
-                className={`${inputClass} ${errors.HeroName ? "border-red-300 bg-red-50" : ""}`}
+                {...register("HeroName")}
+                className={inputClass}
                 placeholder="E.g. Discover the Latest Abaya Collection"
               />
-              {errors.HeroName && <p className={errorClass}>{errors.HeroName.message}</p>}
             </div>
             <div>
               <label className={labelClass}>Hero Description</label>
               <textarea
-                {...register("HeroDescription", { required: "Hero Description is required" })}
+                {...register("HeroDescription")}
                 rows="3"
                 className={`${inputClass} resize-none`}
                 placeholder="Write an engaging subtitle..."
               />
-              {errors.HeroDescription && <p className={errorClass}>{errors.HeroDescription.message}</p>}
             </div>
             <div>
               <label className={labelClass}>Hero Button Text</label>
               <input
                 type="text"
-                {...register("HeroButton", { required: "Hero Button is required" })}
-                className={`${inputClass} ${errors.HeroButton ? "border-red-300 bg-red-50" : ""}`}
+                {...register("HeroButton")}
+                className={inputClass}
                 placeholder="E.g. Shop Now"
               />
-               {errors.HeroButton && <p className={errorClass}>{errors.HeroButton.message}</p>}
             </div>
 
             <div className="mt-4">
@@ -295,21 +292,19 @@ const MainPageAdmin = () => {
               <label className={labelClass}>Collections Title</label>
               <input
                 type="text"
-                {...register("CollectionsName", { required: "Collections Title is required" })}
-                className={`${inputClass} ${errors.CollectionsName ? "border-red-300 bg-red-50" : ""}`}
+                {...register("CollectionsName")}
+                className={inputClass}
                 placeholder="E.g. Our Premium Collections"
               />
-              {errors.CollectionsName && <p className={errorClass}>{errors.CollectionsName.message}</p>}
             </div>
             <div>
               <label className={labelClass}>Collections Description</label>
               <textarea
-                {...register("CollectionsDescription", { required: "Required" })}
+                {...register("CollectionsDescription")}
                 rows="2"
                 className={`${inputClass} resize-none`}
                 placeholder="Description of your collections..."
               />
-              {errors.CollectionsDescription && <p className={errorClass}>{errors.CollectionsDescription.message}</p>}
             </div>
            </div>
         </div>
@@ -322,21 +317,19 @@ const MainPageAdmin = () => {
               <label className={labelClass}>Offer Title</label>
               <input
                 type="text"
-                {...register("OfferName", { required: "Offer Title is required" })}
-                className={`${inputClass} ${errors.OfferName ? "border-red-300 bg-red-50" : ""}`}
+                {...register("OfferName")}
+                className={inputClass}
                 placeholder="E.g. Ramdan Sale!"
               />
-              {errors.OfferName && <p className={errorClass}>{errors.OfferName.message}</p>}
             </div>
             <div>
               <label className={labelClass}>Offer Description</label>
               <textarea
-                {...register("OfferDescription", { required: "Required" })}
+                {...register("OfferDescription")}
                 rows="2"
                 className={`${inputClass} resize-none`}
                 placeholder="Explain the details of your offer..."
               />
-              {errors.OfferDescription && <p className={errorClass}>{errors.OfferDescription.message}</p>}
             </div>
            </div>
         </div>
@@ -349,21 +342,19 @@ const MainPageAdmin = () => {
               <label className={labelClass}>About Title</label>
               <input
                 type="text"
-                {...register("AboutName", { required: "About Title is required" })}
-                className={`${inputClass} ${errors.AboutName ? "border-red-300 bg-red-50" : ""}`}
+                {...register("AboutName")}
+                className={inputClass}
                 placeholder="E.g. About SheShine"
               />
-              {errors.AboutName && <p className={errorClass}>{errors.AboutName.message}</p>}
             </div>
             <div>
               <label className={labelClass}>About Description</label>
               <textarea
-                {...register("AboutDescription", { required: "Required" })}
+                {...register("AboutDescription")}
                 rows="3"
                 className={`${inputClass} resize-none`}
                 placeholder="Your brand story..."
               />
-              {errors.AboutDescription && <p className={errorClass}>{errors.AboutDescription.message}</p>}
             </div>
 
             <div className="mt-4">
