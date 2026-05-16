@@ -13,20 +13,16 @@ const UsersLayout = () => {
 
   useEffect(() => {
     // Show loader on route change
+
+    // use a simple timeout instead of 
     setIsSiteLoading(true);
 
     // Listen for custom event from the Hero component
     const handleAppReady = () => setIsSiteLoading(false);
     window.addEventListener("app-ready", handleAppReady);
 
-    // Fallback: wait longer on homepage for hero image, short time on other pages
-    const fallbackTime = isHomePage ? 800 : 800;
-    const timeout = setTimeout(() => setIsSiteLoading(false), fallbackTime);
-
-    // If it's not the home page, we can also just dispatch it early if there's no Hero
-    if (!isHomePage) {
-      setTimeout(() => setIsSiteLoading(false), 400);
-    }
+    // Fallback: hide loader after 2.5 seconds anyway
+    const timeout = setTimeout(() => setIsSiteLoading(false), 2500);
 
     return () => {
       window.removeEventListener("app-ready", handleAppReady);
