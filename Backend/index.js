@@ -137,6 +137,23 @@ const seedAdmin = async () => {
     console.log(`🚀 Server is LIVE on http://0.0.0.0:${PORT}`);
   });
 
+  // ✅ Graceful Shutdown for Docker / Dokploy (Prevents Ghost Containers & Port Conflicts)
+  const shutdown = () => {
+    console.log("⚠️ Received shutdown signal (SIGTERM/SIGINT). Closing server...");
+    server.close(() => {
+      console.log("🔒 HTTP server closed.");
+      process.exit(0);
+    });
+    // Force close if connections remain open after 5 seconds
+    setTimeout(() => {
+      console.error("❌ Forcing shutdown after 5 seconds...");
+      process.exit(1);
+    }, 5000);
+  };
+
+  process.on("SIGTERM", shutdown);
+  process.on("SIGINT", shutdown);
+
   try {
     await connectDB();
     await sequelize.sync({ alter: true });
