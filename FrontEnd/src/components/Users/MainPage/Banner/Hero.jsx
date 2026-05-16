@@ -36,7 +36,12 @@ const Hero = ({ heroData }) => {
 
   useEffect(() => {
     if (isInitialLoaded) {
-      window.dispatchEvent(new Event("app-ready"));
+      // Wait 700ms for OptimizedImage's fade-in transition to finish
+      // before removing the global loading screen.
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event("app-ready"));
+      }, 700);
+      return () => clearTimeout(timer);
     }
   }, [isInitialLoaded]);
 
