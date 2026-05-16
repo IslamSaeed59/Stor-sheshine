@@ -5,6 +5,7 @@ import OptimizedImage from "../../../common/OptimizedImage";
 
 const Hero = ({ heroData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false);
 
   const hasData = heroData && heroData.HeroImage && heroData.HeroImage.length > 0;
 
@@ -33,6 +34,12 @@ const Hero = ({ heroData }) => {
     return () => clearInterval(interval);
   }, [hasData, nextSlide]);
 
+  useEffect(() => {
+    if (isInitialLoaded) {
+      window.dispatchEvent(new Event("app-ready"));
+    }
+  }, [isInitialLoaded]);
+
   if (!hasData) {
     return <div className="relative w-full h-[100vh] min-h-[600px] overflow-hidden bg-gray-900 animate-pulse" />;
   }
@@ -55,6 +62,7 @@ const Hero = ({ heroData }) => {
             alt={slides[currentIndex].title}
             className="w-full h-full"
             style={{ position: 'absolute' }}
+            onImageLoad={() => setIsInitialLoaded(true)}
           />
         </motion.div>
       </AnimatePresence>

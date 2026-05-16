@@ -40,7 +40,7 @@ function buildCloudinaryUrl(src, width, crop = "") {
   return `${beforeUpload}${cropParam}f_auto,q_auto:eco,w_${width}/${cleanPath}`;
 }
 
-const OptimizedImage = ({ src, alt, className, style, sizes, crop }) => {
+const OptimizedImage = ({ src, alt, className, style, sizes, crop, onImageLoad }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -91,8 +91,14 @@ const OptimizedImage = ({ src, alt, className, style, sizes, crop }) => {
         alt={alt}
         loading="lazy"
         decoding="async"
-        onLoad={() => setIsLoaded(true)}
-        onError={() => setHasError(true)}
+        onLoad={() => {
+          setIsLoaded(true);
+          if (onImageLoad) onImageLoad();
+        }}
+        onError={() => {
+          setHasError(true);
+          if (onImageLoad) onImageLoad();
+        }}
         className={`w-full h-full object-cover transition-opacity duration-700 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
