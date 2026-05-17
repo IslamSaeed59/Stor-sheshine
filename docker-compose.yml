@@ -6,13 +6,10 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - sheshine_uploads:/app/uploads
+      # السطر اللي تحت ده هو السحر: بيربط فولدر السيرفر الحقيقي بفولدر الصور جوه الـ Container
+      - /var/www/uploads:/app/uploads
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
       - NODE_ENV=production
     restart: always
-
-volumes:
-  sheshine_uploads:
-    driver: local
