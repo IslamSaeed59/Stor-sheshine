@@ -28,7 +28,7 @@ const Home = () => {
   return (
     <>
       <Hero heroData={mainPageData} />
-      <Category collectionsData={mainPageData} />
+      {/* <Category collectionsData={mainPageData} /> */}
       <BestProduct />
       <Bestsellers offerData={mainPageData} />
       <AboutUs aboutData={mainPageData} />
