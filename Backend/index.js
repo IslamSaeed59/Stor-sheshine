@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
 });
 
 // ✅ Serve static files (uploaded images)
-app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.static(path.join(__dirname, "../FrontEnd/dist")));
 
 // Import Routes

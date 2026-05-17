@@ -38,7 +38,7 @@ COPY Backend/ ./Backend/
 COPY --from=builder /app/FrontEnd/dist ./FrontEnd/dist
 
 # Create the uploads directory (will be overlaid by Docker Volume)
-RUN mkdir -p /app/Backend/public/uploads
+RUN mkdir -p /app/uploads
 
 # Expose the backend port
 EXPOSE 9000

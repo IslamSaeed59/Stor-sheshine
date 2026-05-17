@@ -12,7 +12,7 @@ const fs = require("fs");
 const deleteLocalFile = async (imageUrl) => {
   if (!imageUrl || !imageUrl.startsWith("/uploads/")) return;
   try {
-    const filePath = path.join(__dirname, "../../public", imageUrl);
+    const filePath = path.join(__dirname, "../../..", imageUrl);
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
