@@ -10,9 +10,18 @@ const fs = require("fs");
 
 // Helper function to delete local files
 const deleteLocalFile = async (imageUrl) => {
-  if (!imageUrl || !imageUrl.startsWith("/uploads/")) return;
+  if (!imageUrl || typeof imageUrl !== 'string') return;
   try {
-    const filePath = path.join(__dirname, "../../..", imageUrl);
+    let cleanUrl = imageUrl.replace(/\\/g, '/');
+    let uploadPart = '';
+    if (cleanUrl.includes('/uploads/')) {
+      uploadPart = cleanUrl.substring(cleanUrl.indexOf('/uploads/'));
+    } else if (cleanUrl.startsWith('uploads/')) {
+      uploadPart = '/' + cleanUrl;
+    } else {
+      return;
+    }
+    const filePath = path.join(__dirname, "../../..", uploadPart);
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }

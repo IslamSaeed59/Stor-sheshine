@@ -7,12 +7,18 @@
 export const optimizeCloudinaryUrl = (url, options = {}) => {
   if (!url || typeof url !== 'string') return url;
   
-  // Handle local uploads
-  if (url.startsWith('/uploads/')) {
+  // Clean up any Windows backslashes
+  let cleanUrl = url.replace(/\\/g, '/');
+
+  // Handle local uploads (whether starting with /uploads/, uploads/, or fully qualified)
+  if (cleanUrl.includes('/uploads/') || cleanUrl.startsWith('uploads/')) {
+    const uploadPart = cleanUrl.includes('/uploads/') 
+      ? cleanUrl.substring(cleanUrl.indexOf('/uploads/'))
+      : `/${cleanUrl}`;
     const backendUrl = import.meta.env.DEV
       ? (import.meta.env.VITE_BACKEND_URL || "http://localhost:9000")
       : window.location.origin;
-    return `${backendUrl}${url}`;
+    return `${backendUrl}${uploadPart}`;
   }
 
   // Only optimize Cloudinary URLs

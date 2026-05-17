@@ -52,8 +52,9 @@ const OptimizedImage = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const isCloudinary = src && src.includes("res.cloudinary.com");
-  const isLocal = src && src.startsWith("/uploads/");
+  const isCloudinary = src && typeof src === 'string' && src.includes("res.cloudinary.com");
+  let cleanSrc = src && typeof src === 'string' ? src.replace(/\\/g, '/') : src;
+  const isLocal = cleanSrc && typeof cleanSrc === 'string' && (cleanSrc.includes("/uploads/") || cleanSrc.startsWith("uploads/"));
 
   const srcSet = isCloudinary
     ? WIDTHS.map((w) => `${buildCloudinaryUrl(src, w, crop)} ${w}w`).join(", ")
@@ -64,10 +65,13 @@ const OptimizedImage = ({
   if (isCloudinary) {
     resolvedSrc = buildCloudinaryUrl(src, 800, crop);
   } else if (isLocal) {
+    const uploadPart = cleanSrc.includes('/uploads/') 
+      ? cleanSrc.substring(cleanSrc.indexOf('/uploads/'))
+      : `/${cleanSrc}`;
     const backendUrl = import.meta.env.DEV
       ? (import.meta.env.VITE_BACKEND_URL || "http://localhost:9000")
       : window.location.origin;
-    resolvedSrc = `${backendUrl}${src}`;
+    resolvedSrc = `${backendUrl}${uploadPart}`;
   }
 
   if (!src || hasError) {
