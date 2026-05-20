@@ -59,16 +59,14 @@ const Hero = ({ heroData }) => {
       {/* Slides Slider Track */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <motion.div
-          className="flex h-full"
+          className="flex w-full h-full"
           animate={{ x: `-${currentIndex * 100}%` }}
           transition={{ duration: 1.0, ease: [0.25, 0.8, 0.25, 1] }}
-          style={{ width: `${slides.length * 100}%` }}
         >
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="relative h-full flex-shrink-0"
-              style={{ width: `${100 / slides.length}%` }}
+              className="relative w-full h-full flex-shrink-0"
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
               <OptimizedImage
