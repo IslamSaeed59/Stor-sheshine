@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import OptimizedImage from "../../../common/OptimizedImage";
 
@@ -56,25 +56,33 @@ const Hero = ({ heroData }) => {
 
   return (
     <div className="relative w-full h-[100vh] min-h-[600px] overflow-hidden bg-gray-900">
-      <AnimatePresence initial={false}>
+      {/* Slides Slider Track */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
         <motion.div
-          key={currentIndex}
-          className="absolute inset-0 w-full h-full"
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.8, 0.25, 1] }}
+          className="flex h-full"
+          animate={{ x: `-${currentIndex * 100}%` }}
+          transition={{ duration: 1.0, ease: [0.25, 0.8, 0.25, 1] }}
+          style={{ width: `${slides.length * 100}%` }}
         >
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <OptimizedImage
-            src={slides[currentIndex].src}
-            alt={slides[currentIndex].title}
-            className="w-full h-full"
-            style={{ position: "absolute" }}
-            onImageLoad={() => setIsInitialLoaded(true)}
-          />
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className="relative h-full flex-shrink-0"
+              style={{ width: `${100 / slides.length}%` }}
+            >
+              <div className="absolute inset-0 bg-black/40 z-10" />
+              <OptimizedImage
+                src={slide.src}
+                alt={slide.title}
+                className="w-full h-full"
+                style={{ position: "absolute" }}
+                loading="eager"
+                onImageLoad={index === 0 ? () => setIsInitialLoaded(true) : undefined}
+              />
+            </div>
+          ))}
         </motion.div>
-      </AnimatePresence>
+      </div>
 
       <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4 max-w-5xl mx-auto">
         <motion.div

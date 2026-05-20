@@ -48,6 +48,7 @@ const OptimizedImage = ({
   sizes,
   crop,
   onImageLoad,
+  loading = "lazy",
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -98,7 +99,7 @@ const OptimizedImage = ({
           sizes || "(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
         }
         alt={alt}
-        loading="lazy"
+        loading={loading}
         decoding="async"
         onLoad={() => {
           setIsLoaded(true);
